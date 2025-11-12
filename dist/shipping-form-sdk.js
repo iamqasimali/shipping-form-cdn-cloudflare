@@ -7,13 +7,12 @@
 (function(window) {
   'use strict';
 
-//   const IFRAME_URL = 'https://your-domain.com/shipping-form.html'; // Replace with your actual URL
-    const IFRAME_URL = '/';
+  const IFRAME_URL = '/shipping-form.html'; // Replace with your actual URL
   
   class ShippingFormSDK {
     constructor(config = {}) {
       this.config = {
-        apiEndpoint: config.apiEndpoint || 'https://c74a998c3a14.ngrok-free.app/api/shipments',
+        apiEndpoint: config.apiEndpoint || 'https://your-rails-app.com/api/shipping-info',
         apiKey: config.apiKey || '',
         theme: config.theme || 'light',
         onSuccess: config.onSuccess || null,
@@ -163,7 +162,6 @@
      */
     async _handleSubmit(formData) {
       try {
-        console.log('Submitting form data:', formData);
         const response = await fetch(this.config.apiEndpoint, {
           method: 'POST',
           headers: {
@@ -174,7 +172,6 @@
           body: JSON.stringify(formData)
         });
 
-        console.log('Response:', response);
         const result = await response.json();
 
         if (!response.ok) {
