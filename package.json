@@ -1,0 +1,15 @@
+{
+  "name": "shipping-form-cdn",
+  "version": "1.0.0",
+  "description": "Static CDN for shipping form assets deployed via Cloudflare Workers",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo 'No build step needed'",
+    "deploy": "npx wrangler deploy"
+  },
+  "author": "Qasim Ali Zahid",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.84.0"
+  }
+}
