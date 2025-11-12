@@ -4,7 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shipping Information Form</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary: #f8fafc;
+      --accent: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -12,70 +28,141 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: #f8f9fa;
-      color: #333;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: var(--text);
       line-height: 1.6;
+      min-height: 100vh;
     }
 
     .container {
       max-width: 100%;
-      height: 100vh;
-      overflow-y: auto;
+      min-height: 100vh;
       padding: 20px;
+      display: flex;
+      flex-direction: column;
     }
 
     .header {
       background: white;
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 24px;
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    .header h1 {
-      font-size: 24px;
-      color: #2c3e50;
+    .header-content h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .header-content p {
+      color: var(--text-light);
+      font-size: 14px;
     }
 
     .close-btn {
-      background: #e74c3c;
+      background: var(--danger);
       color: white;
       border: none;
-      padding: 8px 16px;
-      border-radius: 6px;
+      padding: 12px 20px;
+      border-radius: var(--radius);
       cursor: pointer;
       font-size: 14px;
-      transition: background 0.3s;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow);
     }
 
     .close-btn:hover {
-      background: #c0392b;
+      background: #dc2626;
+      transform: translateY(-1px);
+    }
+
+    .progress-bar {
+      background: #e2e8f0;
+      border-radius: 10px;
+      height: 6px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      height: 100%;
+      width: 0%;
+      transition: width 0.5s ease;
+      border-radius: 10px;
+    }
+
+    .form-sections {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
     .form-section {
       background: white;
-      padding: 24px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 28px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
     }
 
-    .form-section h2 {
+    .form-section.active {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .section-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
       font-size: 20px;
-      color: #2c3e50;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 2px solid #3498db;
+    }
+
+    .section-header h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .section-header p {
+      color: var(--text-light);
+      font-size: 14px;
     }
 
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
       margin-bottom: 16px;
     }
 
@@ -90,122 +177,299 @@
 
     label {
       font-weight: 600;
-      margin-bottom: 6px;
-      color: #555;
+      margin-bottom: 8px;
+      color: var(--text);
       font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
     label .required {
-      color: #e74c3c;
-      margin-left: 2px;
+      color: var(--danger);
+      font-weight: 700;
     }
 
-    input, textarea {
-      padding: 10px 12px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 14px;
-      transition: border-color 0.3s;
+    .input-wrapper {
+      position: relative;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 15px;
+      transition: all 0.3s ease;
       font-family: inherit;
+      background: white;
     }
 
-    input:focus, textarea:focus {
+    input:focus, textarea:focus, select:focus {
       outline: none;
-      border-color: #3498db;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
     }
 
-    input.error, textarea.error {
-      border-color: #e74c3c;
+    input.error, textarea.error, select.error {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
     }
 
     .error-message {
-      color: #e74c3c;
+      color: var(--danger);
       font-size: 12px;
-      margin-top: 4px;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
     textarea {
-      min-height: 80px;
+      min-height: 100px;
       resize: vertical;
+      line-height: 1.5;
+    }
+
+    .unit-info {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
     .submit-section {
       background: white;
-      padding: 24px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 28px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
       text-align: center;
+      margin-top: auto;
+      position: sticky;
+      bottom: 0;
     }
 
     .submit-btn {
-      background: #27ae60;
+      background: linear-gradient(135deg, var(--accent), #059669);
       color: white;
       border: none;
-      padding: 14px 48px;
-      border-radius: 6px;
+      padding: 16px 48px;
+      border-radius: var(--radius);
       cursor: pointer;
       font-size: 16px;
-      font-weight: 600;
-      transition: background 0.3s;
+      font-weight: 700;
+      transition: all 0.3s ease;
       min-width: 200px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      box-shadow: var(--shadow);
     }
 
     .submit-btn:hover:not(:disabled) {
-      background: #229954;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
     }
 
     .submit-btn:disabled {
-      background: #95a5a6;
+      background: #94a3b8;
       cursor: not-allowed;
+      transform: none;
     }
 
     .spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid #ffffff;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
       border-radius: 50%;
-      border-top-color: transparent;
+      border-top-color: white;
       animation: spin 0.8s linear infinite;
-      margin-right: 8px;
     }
 
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
 
-    .success-message, .error-alert {
-      padding: 16px;
-      border-radius: 6px;
+    .notification {
+      padding: 20px;
+      border-radius: var(--radius);
       margin-bottom: 20px;
       display: none;
+      align-items: center;
+      gap: 12px;
+      animation: slideDown 0.3s ease;
     }
 
-    .success-message {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .error-alert {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
+    .notification.success {
+      background: #f0fdf4;
+      color: #166534;
+      border: 2px solid #bbf7d0;
+      display: flex;
     }
 
-    .success-message.show, .error-alert.show {
-      display: block;
+    .notification.error {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 2px solid #fecaca;
+      display: flex;
     }
 
-    .unit-info {
-      font-size: 12px;
-      color: #7f8c8d;
-      margin-top: 4px;
+    .notification-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .section-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .nav-btn {
+      padding: 12px 24px;
+      border: 2px solid var(--primary);
+      border-radius: var(--radius);
+      background: white;
+      color: var(--primary);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: var(--primary);
+      color: white;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .nav-btn.next {
+      background: var(--primary);
+      color: white;
+    }
+
+    .nav-btn.next:hover:not(:disabled) {
+      background: var(--primary-dark);
+    }
+
+    .step-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 20px 0;
+    }
+
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      transition: all 0.3s ease;
+    }
+
+    .step-dot.active {
+      background: var(--primary);
+      transform: scale(1.2);
     }
 
     @media (max-width: 768px) {
+      .container {
+        padding: 16px;
+      }
+
+      .header {
+        padding: 20px;
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+
+      .header-content h1 {
+        font-size: 24px;
+      }
+
+      .form-section {
+        padding: 20px;
+      }
+
       .form-grid {
         grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .section-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 16px 24px;
+      }
+
+      .nav-btn {
+        padding: 12px 20px;
+        font-size: 14px;
+      }
+    }
+
+    /* Dark theme support */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text: #f1f5f9;
+        --text-light: #94a3b8;
+        --border: #334155;
+        --secondary: #1e293b;
+      }
+
+      body {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      }
+
+      .form-section, .header, .submit-section {
+        background: #1e293b;
+        color: var(--text);
+      }
+
+      input, textarea, select {
+        background: #334155;
+        border-color: #475569;
+        color: var(--text);
+      }
+
+      input:focus, textarea:focus, select:focus {
+        background: #334155;
       }
     }
   </style>
@@ -213,163 +477,353 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>📦 Shipping Information Form</h1>
-      <button class="close-btn" onclick="closeForm()">✕ Close</button>
+      <div class="header-content">
+        <h1><i class="fas fa-shipping-fast"></i> Shipping Information</h1>
+        <p>Complete all sections to submit your shipping details</p>
+      </div>
+      <button class="close-btn" onclick="closeForm()">
+        <i class="fas fa-times"></i>
+        Close
+      </button>
     </div>
 
-    <div class="success-message" id="successMessage">
-      ✓ Form submitted successfully!
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
     </div>
 
-    <div class="error-alert" id="errorAlert"></div>
+    <div class="step-indicator" id="stepIndicator"></div>
 
-    <form id="shippingForm">
+    <div class="notification success" id="successMessage">
+      <div class="notification-icon">✅</div>
+      <div>
+        <strong>Success!</strong> Your shipping information has been submitted successfully.
+      </div>
+    </div>
+
+    <div class="notification error" id="errorAlert">
+      <div class="notification-icon">❌</div>
+      <div id="errorMessage"></div>
+    </div>
+
+    <form id="shippingForm" class="form-sections">
       <!-- Buyer Section -->
-      <div class="form-section">
-        <h2>🏢 Buyer Information</h2>
+      <div class="form-section active" id="section-buyer">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-building"></i>
+          </div>
+          <div>
+            <h2>Buyer Information</h2>
+            <p>Company details and contact information</p>
+          </div>
+        </div>
+
         <div class="form-grid">
           <div class="form-group">
             <label>Company Name <span class="required">*</span></label>
-            <input type="text" name="buyer_company_name" required>
+            <div class="input-wrapper">
+              <input type="text" name="buyer_company_name" required placeholder="Enter company name">
+              <i class="fas fa-building input-icon"></i>
+            </div>
           </div>
           <div class="form-group full-width">
             <label>Full Address <span class="required">*</span></label>
-            <textarea name="buyer_address" required></textarea>
+            <textarea name="buyer_address" required placeholder="Enter complete address including street, city, state, and zip code"></textarea>
           </div>
           <div class="form-group">
             <label>Contact Person <span class="required">*</span></label>
-            <input type="text" name="buyer_contact_person" required>
+            <div class="input-wrapper">
+              <input type="text" name="buyer_contact_person" required placeholder="Full name">
+              <i class="fas fa-user input-icon"></i>
+            </div>
           </div>
           <div class="form-group">
             <label>Phone <span class="required">*</span></label>
-            <input type="tel" name="buyer_phone" required>
+            <div class="input-wrapper">
+              <input type="tel" name="buyer_phone" required placeholder="+1 (555) 123-4567">
+              <i class="fas fa-phone input-icon"></i>
+            </div>
           </div>
           <div class="form-group">
             <label>Email <span class="required">*</span></label>
-            <input type="email" name="buyer_email" required>
+            <div class="input-wrapper">
+              <input type="email" name="buyer_email" required placeholder="email@company.com">
+              <i class="fas fa-envelope input-icon"></i>
+            </div>
           </div>
+        </div>
+
+        <div class="section-nav">
+          <button type="button" class="nav-btn" disabled>
+            <i class="fas fa-chevron-left"></i>
+            Previous
+          </button>
+          <button type="button" class="nav-btn next" onclick="showSection('consignee')">
+            Next
+            <i class="fas fa-chevron-right"></i>
+          </button>
         </div>
       </div>
 
       <!-- Ultimate Consignee Section -->
-      <div class="form-section">
-        <h2>🎯 Ultimate Consignee</h2>
+      <div class="form-section" id="section-consignee">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <div>
+            <h2>Ultimate Consignee</h2>
+            <p>Final destination and recipient details</p>
+          </div>
+        </div>
+
         <div class="form-grid">
           <div class="form-group">
             <label>Company Name <span class="required">*</span></label>
-            <input type="text" name="consignee_company_name" required>
+            <div class="input-wrapper">
+              <input type="text" name="consignee_company_name" required placeholder="Enter company name">
+              <i class="fas fa-building input-icon"></i>
+            </div>
           </div>
           <div class="form-group full-width">
             <label>Full Address <span class="required">*</span></label>
-            <textarea name="consignee_address" required></textarea>
+            <textarea name="consignee_address" required placeholder="Enter complete delivery address"></textarea>
           </div>
           <div class="form-group">
             <label>Contact Person <span class="required">*</span></label>
-            <input type="text" name="consignee_contact_person" required>
+            <div class="input-wrapper">
+              <input type="text" name="consignee_contact_person" required placeholder="Full name">
+              <i class="fas fa-user input-icon"></i>
+            </div>
           </div>
           <div class="form-group">
             <label>Phone <span class="required">*</span></label>
-            <input type="tel" name="consignee_phone" required>
+            <div class="input-wrapper">
+              <input type="tel" name="consignee_phone" required placeholder="+1 (555) 123-4567">
+              <i class="fas fa-phone input-icon"></i>
+            </div>
           </div>
           <div class="form-group">
             <label>Email <span class="required">*</span></label>
-            <input type="email" name="consignee_email" required>
+            <div class="input-wrapper">
+              <input type="email" name="consignee_email" required placeholder="email@company.com">
+              <i class="fas fa-envelope input-icon"></i>
+            </div>
           </div>
+        </div>
+
+        <div class="section-nav">
+          <button type="button" class="nav-btn" onclick="showSection('buyer')">
+            <i class="fas fa-chevron-left"></i>
+            Previous
+          </button>
+          <button type="button" class="nav-btn next" onclick="showSection('stuffing')">
+            Next
+            <i class="fas fa-chevron-right"></i>
+          </button>
         </div>
       </div>
 
       <!-- Container Stuffing Location Section -->
-      <div class="form-section">
-        <h2>📍 Container Stuffing Location</h2>
+      <div class="form-section" id="section-stuffing">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-warehouse"></i>
+          </div>
+          <div>
+            <h2>Container Stuffing Location</h2>
+            <p>Where the container will be loaded</p>
+          </div>
+        </div>
+
         <div class="form-grid">
           <div class="form-group">
             <label>Facility Name <span class="required">*</span></label>
-            <input type="text" name="stuffing_facility_name" required>
+            <div class="input-wrapper">
+              <input type="text" name="stuffing_facility_name" required placeholder="Enter facility name">
+              <i class="fas fa-warehouse input-icon"></i>
+            </div>
           </div>
           <div class="form-group full-width">
             <label>Full Address <span class="required">*</span></label>
-            <textarea name="stuffing_address" required></textarea>
+            <textarea name="stuffing_address" required placeholder="Enter complete facility address"></textarea>
           </div>
           <div class="form-group">
             <label>Contact Person <span class="required">*</span></label>
-            <input type="text" name="stuffing_contact_person" required>
+            <div class="input-wrapper">
+              <input type="text" name="stuffing_contact_person" required placeholder="Full name">
+              <i class="fas fa-user input-icon"></i>
+            </div>
           </div>
           <div class="form-group">
             <label>Phone <span class="required">*</span></label>
-            <input type="tel" name="stuffing_phone" required>
+            <div class="input-wrapper">
+              <input type="tel" name="stuffing_phone" required placeholder="+1 (555) 123-4567">
+              <i class="fas fa-phone input-icon"></i>
+            </div>
           </div>
           <div class="form-group">
             <label>Email <span class="required">*</span></label>
-            <input type="email" name="stuffing_email" required>
+            <div class="input-wrapper">
+              <input type="email" name="stuffing_email" required placeholder="email@facility.com">
+              <i class="fas fa-envelope input-icon"></i>
+            </div>
           </div>
+        </div>
+
+        <div class="section-nav">
+          <button type="button" class="nav-btn" onclick="showSection('consignee')">
+            <i class="fas fa-chevron-left"></i>
+            Previous
+          </button>
+          <button type="button" class="nav-btn next" onclick="showSection('manufacturer')">
+            Next
+            <i class="fas fa-chevron-right"></i>
+          </button>
         </div>
       </div>
 
       <!-- Manufacturer/Supplier Section -->
-      <div class="form-section">
-        <h2>🏭 Manufacturer / Supplier</h2>
+      <div class="form-section" id="section-manufacturer">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-industry"></i>
+          </div>
+          <div>
+            <h2>Manufacturer / Supplier</h2>
+            <p>Origin and product source information</p>
+          </div>
+        </div>
+
         <div class="form-grid">
           <div class="form-group">
             <label>Company Name <span class="required">*</span></label>
-            <input type="text" name="manufacturer_company_name" required>
+            <div class="input-wrapper">
+              <input type="text" name="manufacturer_company_name" required placeholder="Enter company name">
+              <i class="fas fa-industry input-icon"></i>
+            </div>
           </div>
           <div class="form-group full-width">
             <label>Full Address <span class="required">*</span></label>
-            <textarea name="manufacturer_address" required></textarea>
+            <textarea name="manufacturer_address" required placeholder="Enter complete manufacturer address"></textarea>
           </div>
           <div class="form-group">
             <label>Contact Person <span class="required">*</span></label>
-            <input type="text" name="manufacturer_contact_person" required>
+            <div class="input-wrapper">
+              <input type="text" name="manufacturer_contact_person" required placeholder="Full name">
+              <i class="fas fa-user input-icon"></i>
+            </div>
           </div>
           <div class="form-group">
             <label>Phone <span class="required">*</span></label>
-            <input type="tel" name="manufacturer_phone" required>
+            <div class="input-wrapper">
+              <input type="tel" name="manufacturer_phone" required placeholder="+1 (555) 123-4567">
+              <i class="fas fa-phone input-icon"></i>
+            </div>
           </div>
           <div class="form-group">
             <label>Email <span class="required">*</span></label>
-            <input type="email" name="manufacturer_email" required>
+            <div class="input-wrapper">
+              <input type="email" name="manufacturer_email" required placeholder="email@manufacturer.com">
+              <i class="fas fa-envelope input-icon"></i>
+            </div>
           </div>
+        </div>
+
+        <div class="section-nav">
+          <button type="button" class="nav-btn" onclick="showSection('stuffing')">
+            <i class="fas fa-chevron-left"></i>
+            Previous
+          </button>
+          <button type="button" class="nav-btn next" onclick="showSection('shipment')">
+            Next
+            <i class="fas fa-chevron-right"></i>
+          </button>
         </div>
       </div>
 
       <!-- Shipment Details -->
-      <div class="form-section">
-        <h2>📦 Shipment Details</h2>
+      <div class="form-section" id="section-shipment">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-box"></i>
+          </div>
+          <div>
+            <h2>Shipment Details</h2>
+            <p>Product dimensions and additional information</p>
+          </div>
+        </div>
+
         <div class="form-grid">
           <div class="form-group">
             <label>Weight (kg) <span class="required">*</span></label>
-            <input type="number" step="0.01" name="weight_kg" required>
-            <div class="unit-info">Weight in kilograms</div>
+            <div class="input-wrapper">
+              <input type="number" step="0.01" name="weight_kg" required placeholder="0.00" min="0.01">
+              <i class="fas fa-weight input-icon"></i>
+            </div>
+            <div class="unit-info">
+              <i class="fas fa-info-circle"></i>
+              Weight in kilograms
+            </div>
           </div>
           <div class="form-group">
             <label>Length (cm) <span class="required">*</span></label>
-            <input type="number" step="0.1" name="length_cm" required>
+            <div class="input-wrapper">
+              <input type="number" step="0.1" name="length_cm" required placeholder="0.0" min="0.1">
+              <i class="fas fa-ruler input-icon"></i>
+            </div>
           </div>
           <div class="form-group">
             <label>Width (cm) <span class="required">*</span></label>
-            <input type="number" step="0.1" name="width_cm" required>
+            <div class="input-wrapper">
+              <input type="number" step="0.1" name="width_cm" required placeholder="0.0" min="0.1">
+              <i class="fas fa-ruler input-icon"></i>
+            </div>
           </div>
           <div class="form-group">
             <label>Height (cm) <span class="required">*</span></label>
-            <input type="number" step="0.1" name="height_cm" required>
+            <div class="input-wrapper">
+              <input type="number" step="0.1" name="height_cm" required placeholder="0.0" min="0.1">
+              <i class="fas fa-ruler input-icon"></i>
+            </div>
           </div>
           <div class="form-group full-width">
             <label>Additional Notes</label>
-            <textarea name="notes" rows="4"></textarea>
+            <textarea name="notes" rows="4" placeholder="Any special instructions, handling requirements, or additional information..."></textarea>
           </div>
         </div>
-      </div>
 
-      <div class="submit-section">
-        <button type="submit" class="submit-btn" id="submitBtn">
-          Submit Form
-        </button>
+        <div class="section-nav">
+          <button type="button" class="nav-btn" onclick="showSection('manufacturer')">
+            <i class="fas fa-chevron-left"></i>
+            Previous
+          </button>
+          <button type="submit" class="nav-btn next" id="submitBtn">
+            <i class="fas fa-paper-plane"></i>
+            Submit Form
+          </button>
+        </div>
       </div>
     </form>
+
+    <div class="submit-section">
+      <div class="form-group">
+        <button type="button" class="submit-btn" id="finalSubmitBtn" onclick="submitForm()">
+          <i class="fas fa-shipping-fast"></i>
+          Submit Shipping Information
+        </button>
+        <div class="unit-info" style="text-align: center; margin-top: 12px;">
+          <i class="fas fa-shield-alt"></i>
+          Your information is secure and encrypted
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
     let config = {};
+    let currentSection = 'buyer';
+    const sections = ['buyer', 'consignee', 'stuffing', 'manufacturer', 'shipment'];
 
     // Parse config from URL
     try {
@@ -377,29 +831,156 @@
       const configParam = urlParams.get('config');
       if (configParam) {
         config = JSON.parse(decodeURIComponent(configParam));
+        applyConfig();
       }
     } catch (e) {
       console.error('Error parsing config:', e);
     }
 
-    // Form submission handler
-    document.getElementById('shippingForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
+    function applyConfig() {
+      // Apply theme if specified
+      if (config.theme === 'dark') {
+        document.documentElement.style.setProperty('--text', '#f1f5f9');
+        document.documentElement.style.setProperty('--text-light', '#94a3b8');
+        document.documentElement.style.setProperty('--border', '#334155');
+        document.documentElement.style.setProperty('--secondary', '#1e293b');
+      }
+    }
+
+    // Initialize step indicator
+    function initStepIndicator() {
+      const indicator = document.getElementById('stepIndicator');
+      indicator.innerHTML = sections.map(section => 
+        `<div class="step-dot ${section === currentSection ? 'active' : ''}" data-section="${section}"></div>`
+      ).join('');
       
-      const submitBtn = document.getElementById('submitBtn');
+      // Add click handlers for step dots
+      document.querySelectorAll('.step-dot').forEach(dot => {
+        dot.addEventListener('click', () => {
+          showSection(dot.dataset.section);
+        });
+      });
+    }
+
+    // Show specific section
+    function showSection(sectionId) {
+      // Hide all sections
+      sections.forEach(section => {
+        document.getElementById(`section-${section}`).classList.remove('active');
+      });
+      
+      // Show target section
+      document.getElementById(`section-${sectionId}`).classList.add('active');
+      currentSection = sectionId;
+      
+      // Update progress
+      updateProgress();
+      updateStepIndicator();
+      
+      // Scroll to top of section
+      document.getElementById(`section-${sectionId}`).scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+
+    // Update progress bar
+    function updateProgress() {
+      const currentIndex = sections.indexOf(currentSection);
+      const progress = ((currentIndex + 1) / sections.length) * 100;
+      document.getElementById('progressFill').style.width = `${progress}%`;
+    }
+
+    // Update step indicator
+    function updateStepIndicator() {
+      document.querySelectorAll('.step-dot').forEach((dot, index) => {
+        const section = sections[index];
+        dot.classList.toggle('active', section === currentSection);
+      });
+    }
+
+    // Form validation
+    function validateSection(sectionId) {
+      const section = document.getElementById(`section-${sectionId}`);
+      const inputs = section.querySelectorAll('input[required], textarea[required], select[required]');
+      let isValid = true;
+
+      inputs.forEach(input => {
+        const errorElement = input.parentElement?.nextElementSibling;
+        if (!input.value.trim()) {
+          input.classList.add('error');
+          if (errorElement && errorElement.classList.contains('error-message')) {
+            errorElement.textContent = 'This field is required';
+          }
+          isValid = false;
+        } else {
+          input.classList.remove('error');
+          if (errorElement && errorElement.classList.contains('error-message')) {
+            errorElement.textContent = '';
+          }
+        }
+
+        // Email validation
+        if (input.type === 'email' && input.value.trim()) {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(input.value)) {
+            input.classList.add('error');
+            if (errorElement) {
+              errorElement.textContent = 'Please enter a valid email address';
+            }
+            isValid = false;
+          }
+        }
+
+        // Phone validation (basic)
+        if (input.type === 'tel' && input.value.trim()) {
+          const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+          const cleanPhone = input.value.replace(/[\s\-\(\)]/g, '');
+          if (!phoneRegex.test(cleanPhone)) {
+            input.classList.add('error');
+            if (errorElement) {
+              errorElement.textContent = 'Please enter a valid phone number';
+            }
+            isValid = false;
+          }
+        }
+      });
+
+      return isValid;
+    }
+
+    // Form submission handler
+    async function submitForm() {
+      const submitBtn = document.getElementById('finalSubmitBtn');
       const successMessage = document.getElementById('successMessage');
       const errorAlert = document.getElementById('errorAlert');
+      const errorMessage = document.getElementById('errorMessage');
       
+      // Validate all sections
+      let allValid = true;
+      sections.forEach(section => {
+        if (!validateSection(section)) {
+          allValid = false;
+        }
+      });
+
+      if (!allValid) {
+        errorMessage.innerHTML = '<strong>Validation Error!</strong> Please check all required fields and fix any errors.';
+        errorAlert.style.display = 'flex';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
       // Hide messages
-      successMessage.classList.remove('show');
-      errorAlert.classList.remove('show');
+      successMessage.style.display = 'none';
+      errorAlert.style.display = 'none';
       
       // Disable button and show loading
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
       
       // Collect form data
-      const formData = new FormData(e.target);
+      const formData = new FormData(document.getElementById('shippingForm'));
       const data = {
         buyer: {
           company_name: formData.get('buyer_company_name'),
@@ -438,7 +1019,8 @@
           },
           notes: formData.get('notes')
         },
-        submitted_at: new Date().toISOString()
+        submitted_at: new Date().toISOString(),
+        sdk_version: '2.0.0'
       };
       
       // Send data to parent window
@@ -446,27 +1028,29 @@
         type: 'SHIPPING_FORM_SUBMIT',
         data: data
       }, '*');
-    });
+    }
 
     // Listen for submission result from parent
     window.addEventListener('message', (event) => {
       const { type, data } = event.data;
-      const submitBtn = document.getElementById('submitBtn');
+      const submitBtn = document.getElementById('finalSubmitBtn');
       const successMessage = document.getElementById('successMessage');
       const errorAlert = document.getElementById('errorAlert');
+      const errorMessage = document.getElementById('errorMessage');
       
       if (type === 'SUBMISSION_SUCCESS') {
-        submitBtn.innerHTML = '✓ Submitted Successfully!';
-        successMessage.classList.add('show');
+        submitBtn.innerHTML = '<i class="fas fa-check"></i> Submitted Successfully!';
+        submitBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        successMessage.style.display = 'flex';
         document.getElementById('shippingForm').reset();
         
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (type === 'SUBMISSION_ERROR') {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Submit Form';
-        errorAlert.textContent = '✗ ' + (data.message || 'Submission failed. Please try again.');
-        errorAlert.classList.add('show');
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Shipping Information';
+        errorMessage.innerHTML = `<strong>Submission Failed!</strong> ${data.message || 'Please try again or contact support.'}`;
+        errorAlert.style.display = 'flex';
         
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -479,6 +1063,61 @@
         type: 'SHIPPING_FORM_CLOSE'
       }, '*');
     }
+
+    // Real-time validation
+    document.addEventListener('input', (e) => {
+      if (e.target.hasAttribute('required')) {
+        validateField(e.target);
+      }
+    });
+
+    function validateField(field) {
+      const errorElement = field.parentElement?.nextElementSibling;
+      
+      if (!field.value.trim()) {
+        field.classList.add('error');
+        if (errorElement && errorElement.classList.contains('error-message')) {
+          errorElement.textContent = 'This field is required';
+        }
+        return false;
+      }
+      
+      // Email validation
+      if (field.type === 'email' && field.value.trim()) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(field.value)) {
+          field.classList.add('error');
+          if (errorElement) {
+            errorElement.textContent = 'Please enter a valid email address';
+          }
+          return false;
+        }
+      }
+      
+      field.classList.remove('error');
+      if (errorElement && errorElement.classList.contains('error-message')) {
+        errorElement.textContent = '';
+      }
+      return true;
+    }
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', () => {
+      initStepIndicator();
+      updateProgress();
+      
+      // Notify parent that form is ready
+      window.parent.postMessage({
+        type: 'SHIPPING_FORM_READY'
+      }, '*');
+    });
+
+    // Handle escape key to close form
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeForm();
+      }
+    });
   </script>
 </body>
 </html>
