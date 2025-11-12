@@ -7,7 +7,7 @@
 (function(window) {
   'use strict';
 
-  const IFRAME_URL = '/shipping-form.html'; // Replace with your actual URL
+  const IFRAME_URL = 'https://shipping-form-cdn.iamqasimalizahid.workers.dev/shipping-form.html'; // Replace with your actual URL
   
   class ShippingFormSDK {
     constructor(config = {}) {
