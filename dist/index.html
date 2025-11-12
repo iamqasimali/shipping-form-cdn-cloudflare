@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shipping Information Form</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 100%;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      color: #2c3e50;
+    }
+
+    .close-btn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+
+    .close-btn:hover {
+      background: #c0392b;
+    }
+
+    .form-section {
+      background: white;
+      padding: 24px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .form-section h2 {
+      font-size: 20px;
+      color: #2c3e50;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #3498db;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #555;
+      font-size: 14px;
+    }
+
+    label .required {
+      color: #e74c3c;
+      margin-left: 2px;
+    }
+
+    input, textarea {
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+      font-family: inherit;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    input.error, textarea.error {
+      border-color: #e74c3c;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .submit-section {
+      background: white;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .submit-btn {
+      background: #27ae60;
+      color: white;
+      border: none;
+      padding: 14px 48px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: background 0.3s;
+      min-width: 200px;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      background: #229954;
+    }
+
+    .submit-btn:disabled {
+      background: #95a5a6;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .success-message, .error-alert {
+      padding: 16px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .success-message {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .error-alert {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .success-message.show, .error-alert.show {
+      display: block;
+    }
+
+    .unit-info {
+      font-size: 12px;
+      color: #7f8c8d;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📦 Shipping Information Form</h1>
+      <button class="close-btn" onclick="closeForm()">✕ Close</button>
+    </div>
+
+    <div class="success-message" id="successMessage">
+      ✓ Form submitted successfully!
+    </div>
+
+    <div class="error-alert" id="errorAlert"></div>
+
+    <form id="shippingForm">
+      <!-- Buyer Section -->
+      <div class="form-section">
+        <h2>🏢 Buyer Information</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Company Name <span class="required">*</span></label>
+            <input type="text" name="buyer_company_name" required>
+          </div>
+          <div class="form-group full-width">
+            <label>Full Address <span class="required">*</span></label>
+            <textarea name="buyer_address" required></textarea>
+          </div>
+          <div class="form-group">
+            <label>Contact Person <span class="required">*</span></label>
+            <input type="text" name="buyer_contact_person" required>
+          </div>
+          <div class="form-group">
+            <label>Phone <span class="required">*</span></label>
+            <input type="tel" name="buyer_phone" required>
+          </div>
+          <div class="form-group">
+            <label>Email <span class="required">*</span></label>
+            <input type="email" name="buyer_email" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ultimate Consignee Section -->
+      <div class="form-section">
+        <h2>🎯 Ultimate Consignee</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Company Name <span class="required">*</span></label>
+            <input type="text" name="consignee_company_name" required>
+          </div>
+          <div class="form-group full-width">
+            <label>Full Address <span class="required">*</span></label>
+            <textarea name="consignee_address" required></textarea>
+          </div>
+          <div class="form-group">
+            <label>Contact Person <span class="required">*</span></label>
+            <input type="text" name="consignee_contact_person" required>
+          </div>
+          <div class="form-group">
+            <label>Phone <span class="required">*</span></label>
+            <input type="tel" name="consignee_phone" required>
+          </div>
+          <div class="form-group">
+            <label>Email <span class="required">*</span></label>
+            <input type="email" name="consignee_email" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Container Stuffing Location Section -->
+      <div class="form-section">
+        <h2>📍 Container Stuffing Location</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Facility Name <span class="required">*</span></label>
+            <input type="text" name="stuffing_facility_name" required>
+          </div>
+          <div class="form-group full-width">
+            <label>Full Address <span class="required">*</span></label>
+            <textarea name="stuffing_address" required></textarea>
+          </div>
+          <div class="form-group">
+            <label>Contact Person <span class="required">*</span></label>
+            <input type="text" name="stuffing_contact_person" required>
+          </div>
+          <div class="form-group">
+            <label>Phone <span class="required">*</span></label>
+            <input type="tel" name="stuffing_phone" required>
+          </div>
+          <div class="form-group">
+            <label>Email <span class="required">*</span></label>
+            <input type="email" name="stuffing_email" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Manufacturer/Supplier Section -->
+      <div class="form-section">
+        <h2>🏭 Manufacturer / Supplier</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Company Name <span class="required">*</span></label>
+            <input type="text" name="manufacturer_company_name" required>
+          </div>
+          <div class="form-group full-width">
+            <label>Full Address <span class="required">*</span></label>
+            <textarea name="manufacturer_address" required></textarea>
+          </div>
+          <div class="form-group">
+            <label>Contact Person <span class="required">*</span></label>
+            <input type="text" name="manufacturer_contact_person" required>
+          </div>
+          <div class="form-group">
+            <label>Phone <span class="required">*</span></label>
+            <input type="tel" name="manufacturer_phone" required>
+          </div>
+          <div class="form-group">
+            <label>Email <span class="required">*</span></label>
+            <input type="email" name="manufacturer_email" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shipment Details -->
+      <div class="form-section">
+        <h2>📦 Shipment Details</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Weight (kg) <span class="required">*</span></label>
+            <input type="number" step="0.01" name="weight_kg" required>
+            <div class="unit-info">Weight in kilograms</div>
+          </div>
+          <div class="form-group">
+            <label>Length (cm) <span class="required">*</span></label>
+            <input type="number" step="0.1" name="length_cm" required>
+          </div>
+          <div class="form-group">
+            <label>Width (cm) <span class="required">*</span></label>
+            <input type="number" step="0.1" name="width_cm" required>
+          </div>
+          <div class="form-group">
+            <label>Height (cm) <span class="required">*</span></label>
+            <input type="number" step="0.1" name="height_cm" required>
+          </div>
+          <div class="form-group full-width">
+            <label>Additional Notes</label>
+            <textarea name="notes" rows="4"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="submit-section">
+        <button type="submit" class="submit-btn" id="submitBtn">
+          Submit Form
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    let config = {};
+
+    // Parse config from URL
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const configParam = urlParams.get('config');
+      if (configParam) {
+        config = JSON.parse(decodeURIComponent(configParam));
+      }
+    } catch (e) {
+      console.error('Error parsing config:', e);
+    }
+
+    // Form submission handler
+    document.getElementById('shippingForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('submitBtn');
+      const successMessage = document.getElementById('successMessage');
+      const errorAlert = document.getElementById('errorAlert');
+      
+      // Hide messages
+      successMessage.classList.remove('show');
+      errorAlert.classList.remove('show');
+      
+      // Disable button and show loading
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
+      
+      // Collect form data
+      const formData = new FormData(e.target);
+      const data = {
+        buyer: {
+          company_name: formData.get('buyer_company_name'),
+          address: formData.get('buyer_address'),
+          contact_person: formData.get('buyer_contact_person'),
+          phone: formData.get('buyer_phone'),
+          email: formData.get('buyer_email')
+        },
+        ultimate_consignee: {
+          company_name: formData.get('consignee_company_name'),
+          address: formData.get('consignee_address'),
+          contact_person: formData.get('consignee_contact_person'),
+          phone: formData.get('consignee_phone'),
+          email: formData.get('consignee_email')
+        },
+        container_stuffing_location: {
+          facility_name: formData.get('stuffing_facility_name'),
+          address: formData.get('stuffing_address'),
+          contact_person: formData.get('stuffing_contact_person'),
+          phone: formData.get('stuffing_phone'),
+          email: formData.get('stuffing_email')
+        },
+        manufacturer: {
+          company_name: formData.get('manufacturer_company_name'),
+          address: formData.get('manufacturer_address'),
+          contact_person: formData.get('manufacturer_contact_person'),
+          phone: formData.get('manufacturer_phone'),
+          email: formData.get('manufacturer_email')
+        },
+        shipment_details: {
+          weight_kg: parseFloat(formData.get('weight_kg')),
+          dimensions_cm: {
+            length: parseFloat(formData.get('length_cm')),
+            width: parseFloat(formData.get('width_cm')),
+            height: parseFloat(formData.get('height_cm'))
+          },
+          notes: formData.get('notes')
+        },
+        submitted_at: new Date().toISOString()
+      };
+      
+      // Send data to parent window
+      window.parent.postMessage({
+        type: 'SHIPPING_FORM_SUBMIT',
+        data: data
+      }, '*');
+    });
+
+    // Listen for submission result from parent
+    window.addEventListener('message', (event) => {
+      const { type, data } = event.data;
+      const submitBtn = document.getElementById('submitBtn');
+      const successMessage = document.getElementById('successMessage');
+      const errorAlert = document.getElementById('errorAlert');
+      
+      if (type === 'SUBMISSION_SUCCESS') {
+        submitBtn.innerHTML = '✓ Submitted Successfully!';
+        successMessage.classList.add('show');
+        document.getElementById('shippingForm').reset();
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (type === 'SUBMISSION_ERROR') {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Submit Form';
+        errorAlert.textContent = '✗ ' + (data.message || 'Submission failed. Please try again.');
+        errorAlert.classList.add('show');
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+
+    // Close form handler
+    function closeForm() {
+      window.parent.postMessage({
+        type: 'SHIPPING_FORM_CLOSE'
+      }, '*');
+    }
+  </script>
+</body>
+</html>
