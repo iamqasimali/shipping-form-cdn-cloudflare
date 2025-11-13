@@ -8,7 +8,7 @@
   "use strict";
 
   const IFRAME_URL =
-    "https://shipping-form-cdn.iamqasimalizahid.workers.dev/index.html";
+    "https://shipping-form-cdn.iamqasimalizahid.workers.dev/shipping-form.html";
   const SDK_VERSION = "2.0.0";
 
   class ShippingFormSDK {
