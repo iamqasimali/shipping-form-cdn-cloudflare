@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shipping Form SDK Demo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary: #f8fafc;
+      --accent: #10b981;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      --radius: 16px;
+      --radius-sm: 8px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .demo-container {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      padding: 60px 50px;
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .demo-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+
+    h1 {
+      font-size: 42px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: var(--text-light);
+      margin-bottom: 50px;
+      font-weight: 500;
+    }
+
+    .demo-section {
+      background: var(--secondary);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 30px;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .demo-section:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .demo-section h2 {
+      font-size: 22px;
+      color: var(--text);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .section-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: none;
+      padding: 16px 40px;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      margin: 10px;
+      min-width: 200px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+    }
+
+    .btn:active {
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #475569, #334155);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, var(--accent), #059669);
+    }
+
+    .config-box {
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 24px;
+      border-radius: var(--radius-sm);
+      text-align: left;
+      font-family: 'Fira Code', 'Courier New', monospace;
+      font-size: 14px;
+      overflow-x: auto;
+      margin-top: 20px;
+      border-left: 4px solid var(--accent);
+      line-height: 1.5;
+    }
+
+    .config-key {
+      color: #7dd3fc;
+    }
+
+    .config-value {
+      color: #bbf7d0;
+    }
+
+    .config-string {
+      color: #fde68a;
+    }
+
+    .status-box {
+      background: white;
+      padding: 24px;
+      border-radius: var(--radius-sm);
+      margin-top: 20px;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--border);
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .status-success {
+      background: #f0fdf4;
+      color: #166534;
+      border-color: #bbf7d0;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+    }
+
+    .status-error {
+      background: #fef2f2;
+      color: #991b1b;
+      border-color: #fecaca;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+    }
+
+    .status-info {
+      background: #eff6ff;
+      color: #1e40af;
+      border-color: #bfdbfe;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+    }
+
+    .feature-list {
+      text-align: left;
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+      background: white;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+
+    .feature-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .feature-icon {
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 8px;
+      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+    }
+
+    .footer {
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 2px solid var(--border);
+    }
+
+    .footer-text {
+      color: var(--text-light);
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .demo-container {
+        padding: 40px 25px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .btn {
+        width: 100%;
+        margin: 8px 0;
+      }
+
+      .feature-list {
+        grid-template-columns: 1fr;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+
+      .stats {
+        gap: 20px;
+      }
+    }
+
+    /* Animation for status updates */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
+    .status-update {
+      animation: pulse 0.5s ease;
+    }
+
+    /* Loading animation */
+    .loading-dots {
+      display: inline-flex;
+      gap: 4px;
+    }
+
+    .loading-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: bounce 1.4s infinite ease-in-out both;
+    }
+
+    .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+    .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+    <h1><i class="fas fa-shipping-fast"></i> Shipping Form SDK</h1>
+    <p class="subtitle">Interactive Demo & Testing Environment</p>
+
+    <div class="demo-section">
+      <h2>
+        <div class="section-icon">
+          <i class="fas fa-rocket"></i>
+        </div>
+        Try It Out
+      </h2>
+      <p style="color: var(--text-light); margin-bottom: 25px;">
+        Experience the seamless integration with our shipping form modal
+      </p>
+      <button class="btn" onclick="openShippingForm()">
+        <i class="fas fa-external-link-alt"></i>
+        Open Shipping Form
+      </button>
+      
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-number">6+</div>
+          <div class="stat-label">Form Fields</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Mobile Ready</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">&lt;2s</div>
+          <div class="stat-label">Load Time</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <h2>
+        <div class="section-icon">
+          <i class="fas fa-cog"></i>
+        </div>
+        Current Configuration
+      </h2>
+      <div class="config-box" id="configDisplay">
+        Loading configuration...
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <h2>
+        <div class="section-icon">
+          <i class="fas fa-chart-bar"></i>
+        </div>
+        Live Status
+      </h2>
+      <div class="status-box" id="statusDisplay">
+        <div class="loading-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        Initializing SDK...
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <h2>
+        <div class="section-icon">
+          <i class="fas fa-star"></i>
+        </div>
+        Key Features
+      </h2>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-check"></i>
+          </div>
+          <div>
+            <strong>Easy Integration</strong>
+            <div style="font-size: 14px; color: var(--text-light); margin-top: 4px;">Simple iframe-based setup</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div>
+            <strong>Secure Communication</strong>
+            <div style="font-size: 14px; color: var(--text-light); margin-top: 4px;">Cross-origin security</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <div>
+            <strong>Responsive Design</strong>
+            <div style="font-size: 14px; color: var(--text-light); margin-top: 4px;">Mobile-first approach</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <div>
+            <strong>Real-time Validation</strong>
+            <div style="font-size: 14px; color: var(--text-light); margin-top: 4px;">Instant feedback</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-code"></i>
+          </div>
+          <div>
+            <strong>Custom Callbacks</strong>
+            <div style="font-size: 14px; color: var(--text-light); margin-top: 4px;">Flexible event handling</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="fas fa-ruler"></i>
+          </div>
+          <div>
+            <strong>Metric Units</strong>
+            <div style="font-size: 14px; color: var(--text-light); margin-top: 4px;">cm and kg support</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p class="footer-text">
+        Ready to integrate? Check out our comprehensive documentation
+      </p>
+      <div class="action-buttons">
+        <a class="btn btn-secondary" href="Documentation.html" target="_blank" rel="noopener">
+          <i class="fas fa-book"></i>
+          View Documentation
+        </a>
+        <button class="btn btn-success" onclick="testIntegration()">
+          <i class="fas fa-vial"></i>
+          Test Integration
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load the Shipping Form SDK from Cloudflare -->
+  <script src="https://shipping-form-cdn.iamqasimalizahid.workers.dev/shipping-form-sdk.js"></script>
+  {{/*  <script src="https://shipping-form-cdn.iamqasimalizahid.workers.dev/main.js"></script>  */}}
+
+  <script>
+    // Configuration - UPDATE THESE VALUES!
+    const config = {
+      apiEndpoint: 'https://your-deployed-rails-api.com/api/v1/shipping_infos',
+      apiKey: 'your-deployed-api-key',
+      onSuccess: function(data) {
+        console.log('✅ Form submitted successfully!', data);
+        updateStatus('success', `Form submitted successfully! ID: ${data.id || 'N/A'}`);
+        
+        // Show success notification
+        showNotification('success', '🎉 Success! Your shipping information has been submitted.');
+      },
+      onError: function(error) {
+        console.error('❌ Form submission failed:', error);
+        updateStatus('error', `Submission failed: ${error.message || 'Unknown error'}`);
+        
+        // Show error notification
+        showNotification('error', '❌ Error: ' + (error.message || 'Submission failed. Please try again.'));
+      },
+      onClose: function() {
+        console.log('ℹ️ Form closed');
+        updateStatus('info', 'Form closed by user');
+      }
+    };
+
+    // Initialize the SDK
+    let shippingFormSDK;
+    
+    function initializeSDK() {
+      try {
+        shippingFormSDK = new ShippingFormSDK(config);
+        console.log('✅ Shipping Form SDK initialized successfully');
+        updateStatus('success', 'SDK initialized and ready to use!');
+        displayConfig();
+      } catch (error) {
+        console.error('❌ Failed to initialize SDK:', error);
+        updateStatus('error', 'Failed to initialize SDK. Check console for details.');
+      }
+    }
+
+    // Open form function
+    function openShippingForm() {
+      if (shippingFormSDK) {
+        shippingFormSDK.open();
+        updateStatus('info', 'Form opened. Fill in the details and submit.');
+      } else {
+        showNotification('error', 'SDK not initialized. Please refresh the page.');
+      }
+    }
+
+    // Test integration
+    function testIntegration() {
+      updateStatus('info', 'Running integration tests...');
+      
+      setTimeout(() => {
+        if (shippingFormSDK) {
+          updateStatus('success', '✅ Integration test passed! SDK is working correctly.');
+          showNotification('success', 'Integration test completed successfully!');
+        } else {
+          updateStatus('error', '❌ Integration test failed. SDK not available.');
+        }
+      }, 1500);
+    }
+
+    // Display configuration
+    function displayConfig() {
+      const configEl = document.getElementById('configDisplay');
+      configEl.innerHTML = `{
+  <span class="config-key">apiEndpoint</span>: <span class="config-string">"${config.apiEndpoint}"</span>,
+  <span class="config-key">apiKey</span>: <span class="config-string">"${config.apiKey}"</span>,
+  <span class="config-key">onSuccess</span>: <span class="config-value">function(data) { ... }</span>,
+  <span class="config-key">onError</span>: <span class="config-value">function(error) { ... }</span>,
+  <span class="config-key">onClose</span>: <span class="config-value">function() { ... }</span>
+}
+
+<span style="color: #f87171; font-weight: 600;">⚠️ Update apiEndpoint and apiKey with your actual values!</span>`;
+    }
+
+    // Update status display
+    function updateStatus(type, message) {
+      const statusEl = document.getElementById('statusDisplay');
+      statusEl.className = 'status-box status-update';
+      
+      // Clear loading animation
+      statusEl.innerHTML = '';
+      
+      if (type === 'success') {
+        statusEl.classList.add('status-success');
+        statusEl.innerHTML = '<i class="fas fa-check-circle" style="margin-right: 10px;"></i>' + message;
+      } else if (type === 'error') {
+        statusEl.classList.add('status-error');
+        statusEl.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right: 10px;"></i>' + message;
+      } else {
+        statusEl.classList.add('status-info');
+        statusEl.innerHTML = '<i class="fas fa-info-circle" style="margin-right: 10px;"></i>' + message;
+      }
+      
+      // Remove animation class after animation completes
+      setTimeout(() => {
+        statusEl.classList.remove('status-update');
+      }, 500);
+    }
+
+    // Show notification
+    function showNotification(type, message) {
+      // Create notification element
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 16px 20px;
+        border-radius: 12px;
+        color: white;
+        font-weight: 600;
+        z-index: 1000;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+        max-width: 400px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      `;
+      
+      if (type === 'success') {
+        notification.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+      } else {
+        notification.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+      }
+      
+      notification.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check' : 'exclamation'}-circle"></i>
+        ${message}
+      `;
+      
+      document.body.appendChild(notification);
+      
+      // Animate in
+      setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+      }, 100);
+      
+      // Remove after 5 seconds
+      setTimeout(() => {
+        notification.style.transform = 'translateX(400px)';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }, 5000);
+    }
+
+    // Initialize on load
+    window.addEventListener('load', function() {
+      setTimeout(initializeSDK, 1000);
+    });
+  </script>
+</body>
+</html>

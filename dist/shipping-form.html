@@ -29,7 +29,7 @@
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #f8fafc;
       color: var(--text);
       line-height: 1.6;
       min-height: 100vh;
@@ -39,8 +39,6 @@
       max-width: 100%;
       min-height: 100vh;
       padding: 20px;
-      display: flex;
-      flex-direction: column;
     }
 
     .header {
@@ -90,24 +88,103 @@
       transform: translateY(-1px);
     }
 
+    .progress-container {
+      background: white;
+      padding: 20px;
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+
     .progress-bar {
       background: #e2e8f0;
       border-radius: 10px;
       height: 6px;
-      margin: 20px 0;
+      margin: 10px 0;
       overflow: hidden;
     }
 
     .progress-fill {
       background: linear-gradient(90deg, var(--primary), var(--accent));
       height: 100%;
-      width: 0%;
+      width: 20%;
       transition: width 0.5s ease;
       border-radius: 10px;
     }
 
-    .form-sections {
+    .step-indicator {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       flex: 1;
+      position: relative;
+    }
+
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 60%;
+      right: -40%;
+      height: 2px;
+      background: #e2e8f0;
+      z-index: 1;
+    }
+
+    .step.active:not(:last-child)::after {
+      background: var(--primary);
+    }
+
+    .step-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: var(--text-light);
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 2;
+      transition: all 0.3s ease;
+    }
+
+    .step.active .step-circle {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    .step.completed .step-circle {
+      background: var(--accent);
+      color: white;
+    }
+
+    .step.completed .step-circle::after {
+      content: '✓';
+      font-weight: bold;
+    }
+
+    .step-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-light);
+      text-align: center;
+    }
+
+    .step.active .step-label {
+      color: var(--primary);
+    }
+
+    .form-sections {
       display: flex;
       flex-direction: column;
       gap: 20px;
@@ -120,9 +197,11 @@
       box-shadow: var(--shadow);
       transition: all 0.3s ease;
       border: 2px solid transparent;
+      display: none;
     }
 
     .form-section.active {
+      display: block;
       border-color: var(--primary);
       box-shadow: var(--shadow-lg);
     }
@@ -231,6 +310,11 @@
       display: flex;
       align-items: center;
       gap: 4px;
+      display: none;
+    }
+
+    .error-message.show {
+      display: flex;
     }
 
     textarea {
@@ -248,15 +332,54 @@
       gap: 4px;
     }
 
+    .section-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .nav-btn {
+      padding: 12px 24px;
+      border: 2px solid var(--primary);
+      border-radius: var(--radius);
+      background: white;
+      color: var(--primary);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: var(--primary);
+      color: white;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .nav-btn.next {
+      background: var(--primary);
+      color: white;
+    }
+
+    .nav-btn.next:hover:not(:disabled) {
+      background: var(--primary-dark);
+    }
+
     .submit-section {
       background: white;
       padding: 28px;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       text-align: center;
-      margin-top: auto;
-      position: sticky;
-      bottom: 0;
+      margin-top: 20px;
     }
 
     .submit-btn {
@@ -326,80 +449,17 @@
       background: #f0fdf4;
       color: #166534;
       border: 2px solid #bbf7d0;
-      display: flex;
     }
 
     .notification.error {
       background: #fef2f2;
       color: #991b1b;
       border: 2px solid #fecaca;
-      display: flex;
     }
 
     .notification-icon {
       font-size: 20px;
       flex-shrink: 0;
-    }
-
-    .section-nav {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 24px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-    }
-
-    .nav-btn {
-      padding: 12px 24px;
-      border: 2px solid var(--primary);
-      border-radius: var(--radius);
-      background: white;
-      color: var(--primary);
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .nav-btn:hover:not(:disabled) {
-      background: var(--primary);
-      color: white;
-    }
-
-    .nav-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .nav-btn.next {
-      background: var(--primary);
-      color: white;
-    }
-
-    .nav-btn.next:hover:not(:disabled) {
-      background: var(--primary-dark);
-    }
-
-    .step-indicator {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin: 20px 0;
-    }
-
-    .step-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #cbd5e1;
-      transition: all 0.3s ease;
-    }
-
-    .step-dot.active {
-      background: var(--primary);
-      transform: scale(1.2);
     }
 
     @media (max-width: 768px) {
@@ -433,43 +493,23 @@
         gap: 16px;
       }
 
-      .submit-btn {
-        width: 100%;
-        padding: 16px 24px;
+      .step-indicator {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .step:not(:last-child)::after {
+        display: none;
       }
 
       .nav-btn {
         padding: 12px 20px;
         font-size: 14px;
       }
-    }
 
-    /* Dark theme support */
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --text: #f1f5f9;
-        --text-light: #94a3b8;
-        --border: #334155;
-        --secondary: #1e293b;
-      }
-
-      body {
-        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-      }
-
-      .form-section, .header, .submit-section {
-        background: #1e293b;
-        color: var(--text);
-      }
-
-      input, textarea, select {
-        background: #334155;
-        border-color: #475569;
-        color: var(--text);
-      }
-
-      input:focus, textarea:focus, select:focus {
-        background: #334155;
+      .submit-btn {
+        width: 100%;
+        padding: 16px 24px;
       }
     }
   </style>
@@ -487,12 +527,17 @@
       </button>
     </div>
 
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill"></div>
+    <!-- Progress Section -->
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="step-indicator" id="stepIndicator">
+        <!-- Steps will be populated by JavaScript -->
+      </div>
     </div>
 
-    <div class="step-indicator" id="stepIndicator"></div>
-
+    <!-- Notifications -->
     <div class="notification success" id="successMessage">
       <div class="notification-icon">✅</div>
       <div>
@@ -505,6 +550,7 @@
       <div id="errorMessage"></div>
     </div>
 
+    <!-- Form Sections -->
     <form id="shippingForm" class="form-sections">
       <!-- Buyer Section -->
       <div class="form-section active" id="section-buyer">
@@ -525,16 +571,28 @@
               <input type="text" name="buyer_company_name" required placeholder="Enter company name">
               <i class="fas fa-building input-icon"></i>
             </div>
+            <div class="error-message" id="buyer_company_name_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
           </div>
           <div class="form-group full-width">
             <label>Full Address <span class="required">*</span></label>
             <textarea name="buyer_address" required placeholder="Enter complete address including street, city, state, and zip code"></textarea>
+            <div class="error-message" id="buyer_address_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
           </div>
           <div class="form-group">
             <label>Contact Person <span class="required">*</span></label>
             <div class="input-wrapper">
               <input type="text" name="buyer_contact_person" required placeholder="Full name">
               <i class="fas fa-user input-icon"></i>
+            </div>
+            <div class="error-message" id="buyer_contact_person_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
             </div>
           </div>
           <div class="form-group">
@@ -543,12 +601,20 @@
               <input type="tel" name="buyer_phone" required placeholder="+1 (555) 123-4567">
               <i class="fas fa-phone input-icon"></i>
             </div>
+            <div class="error-message" id="buyer_phone_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
           </div>
           <div class="form-group">
             <label>Email <span class="required">*</span></label>
             <div class="input-wrapper">
               <input type="email" name="buyer_email" required placeholder="email@company.com">
               <i class="fas fa-envelope input-icon"></i>
+            </div>
+            <div class="error-message" id="buyer_email_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
             </div>
           </div>
         </div>
@@ -558,7 +624,7 @@
             <i class="fas fa-chevron-left"></i>
             Previous
           </button>
-          <button type="button" class="nav-btn next" onclick="showSection('consignee')">
+          <button type="button" class="nav-btn next" onclick="nextSection('buyer', 'consignee')">
             Next
             <i class="fas fa-chevron-right"></i>
           </button>
@@ -584,16 +650,28 @@
               <input type="text" name="consignee_company_name" required placeholder="Enter company name">
               <i class="fas fa-building input-icon"></i>
             </div>
+            <div class="error-message" id="consignee_company_name_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
           </div>
           <div class="form-group full-width">
             <label>Full Address <span class="required">*</span></label>
             <textarea name="consignee_address" required placeholder="Enter complete delivery address"></textarea>
+            <div class="error-message" id="consignee_address_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
           </div>
           <div class="form-group">
             <label>Contact Person <span class="required">*</span></label>
             <div class="input-wrapper">
               <input type="text" name="consignee_contact_person" required placeholder="Full name">
               <i class="fas fa-user input-icon"></i>
+            </div>
+            <div class="error-message" id="consignee_contact_person_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
             </div>
           </div>
           <div class="form-group">
@@ -602,6 +680,10 @@
               <input type="tel" name="consignee_phone" required placeholder="+1 (555) 123-4567">
               <i class="fas fa-phone input-icon"></i>
             </div>
+            <div class="error-message" id="consignee_phone_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
           </div>
           <div class="form-group">
             <label>Email <span class="required">*</span></label>
@@ -609,15 +691,19 @@
               <input type="email" name="consignee_email" required placeholder="email@company.com">
               <i class="fas fa-envelope input-icon"></i>
             </div>
+            <div class="error-message" id="consignee_email_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
           </div>
         </div>
 
         <div class="section-nav">
-          <button type="button" class="nav-btn" onclick="showSection('buyer')">
+          <button type="button" class="nav-btn" onclick="previousSection('consignee', 'buyer')">
             <i class="fas fa-chevron-left"></i>
             Previous
           </button>
-          <button type="button" class="nav-btn next" onclick="showSection('stuffing')">
+          <button type="button" class="nav-btn next" onclick="nextSection('consignee', 'stuffing')">
             Next
             <i class="fas fa-chevron-right"></i>
           </button>
@@ -643,16 +729,28 @@
               <input type="text" name="stuffing_facility_name" required placeholder="Enter facility name">
               <i class="fas fa-warehouse input-icon"></i>
             </div>
+            <div class="error-message" id="stuffing_facility_name_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
           </div>
           <div class="form-group full-width">
             <label>Full Address <span class="required">*</span></label>
             <textarea name="stuffing_address" required placeholder="Enter complete facility address"></textarea>
+            <div class="error-message" id="stuffing_address_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
           </div>
           <div class="form-group">
             <label>Contact Person <span class="required">*</span></label>
             <div class="input-wrapper">
               <input type="text" name="stuffing_contact_person" required placeholder="Full name">
               <i class="fas fa-user input-icon"></i>
+            </div>
+            <div class="error-message" id="stuffing_contact_person_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
             </div>
           </div>
           <div class="form-group">
@@ -661,6 +759,10 @@
               <input type="tel" name="stuffing_phone" required placeholder="+1 (555) 123-4567">
               <i class="fas fa-phone input-icon"></i>
             </div>
+            <div class="error-message" id="stuffing_phone_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
           </div>
           <div class="form-group">
             <label>Email <span class="required">*</span></label>
@@ -668,15 +770,19 @@
               <input type="email" name="stuffing_email" required placeholder="email@facility.com">
               <i class="fas fa-envelope input-icon"></i>
             </div>
+            <div class="error-message" id="stuffing_email_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
           </div>
         </div>
 
         <div class="section-nav">
-          <button type="button" class="nav-btn" onclick="showSection('consignee')">
+          <button type="button" class="nav-btn" onclick="previousSection('stuffing', 'consignee')">
             <i class="fas fa-chevron-left"></i>
             Previous
           </button>
-          <button type="button" class="nav-btn next" onclick="showSection('manufacturer')">
+          <button type="button" class="nav-btn next" onclick="nextSection('stuffing', 'manufacturer')">
             Next
             <i class="fas fa-chevron-right"></i>
           </button>
@@ -702,16 +808,28 @@
               <input type="text" name="manufacturer_company_name" required placeholder="Enter company name">
               <i class="fas fa-industry input-icon"></i>
             </div>
+            <div class="error-message" id="manufacturer_company_name_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
           </div>
           <div class="form-group full-width">
             <label>Full Address <span class="required">*</span></label>
             <textarea name="manufacturer_address" required placeholder="Enter complete manufacturer address"></textarea>
+            <div class="error-message" id="manufacturer_address_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
           </div>
           <div class="form-group">
             <label>Contact Person <span class="required">*</span></label>
             <div class="input-wrapper">
               <input type="text" name="manufacturer_contact_person" required placeholder="Full name">
               <i class="fas fa-user input-icon"></i>
+            </div>
+            <div class="error-message" id="manufacturer_contact_person_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
             </div>
           </div>
           <div class="form-group">
@@ -720,6 +838,10 @@
               <input type="tel" name="manufacturer_phone" required placeholder="+1 (555) 123-4567">
               <i class="fas fa-phone input-icon"></i>
             </div>
+            <div class="error-message" id="manufacturer_phone_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
           </div>
           <div class="form-group">
             <label>Email <span class="required">*</span></label>
@@ -727,15 +849,19 @@
               <input type="email" name="manufacturer_email" required placeholder="email@manufacturer.com">
               <i class="fas fa-envelope input-icon"></i>
             </div>
+            <div class="error-message" id="manufacturer_email_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
           </div>
         </div>
 
         <div class="section-nav">
-          <button type="button" class="nav-btn" onclick="showSection('stuffing')">
+          <button type="button" class="nav-btn" onclick="previousSection('manufacturer', 'stuffing')">
             <i class="fas fa-chevron-left"></i>
             Previous
           </button>
-          <button type="button" class="nav-btn next" onclick="showSection('shipment')">
+          <button type="button" class="nav-btn next" onclick="nextSection('manufacturer', 'shipment')">
             Next
             <i class="fas fa-chevron-right"></i>
           </button>
@@ -761,6 +887,10 @@
               <input type="number" step="0.01" name="weight_kg" required placeholder="0.00" min="0.01">
               <i class="fas fa-weight input-icon"></i>
             </div>
+            <div class="error-message" id="weight_kg_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
             <div class="unit-info">
               <i class="fas fa-info-circle"></i>
               Weight in kilograms
@@ -772,6 +902,10 @@
               <input type="number" step="0.1" name="length_cm" required placeholder="0.0" min="0.1">
               <i class="fas fa-ruler input-icon"></i>
             </div>
+            <div class="error-message" id="length_cm_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
           </div>
           <div class="form-group">
             <label>Width (cm) <span class="required">*</span></label>
@@ -779,12 +913,20 @@
               <input type="number" step="0.1" name="width_cm" required placeholder="0.0" min="0.1">
               <i class="fas fa-ruler input-icon"></i>
             </div>
+            <div class="error-message" id="width_cm_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
+            </div>
           </div>
           <div class="form-group">
             <label>Height (cm) <span class="required">*</span></label>
             <div class="input-wrapper">
               <input type="number" step="0.1" name="height_cm" required placeholder="0.0" min="0.1">
               <i class="fas fa-ruler input-icon"></i>
+            </div>
+            <div class="error-message" id="height_cm_error">
+              <i class="fas fa-exclamation-circle"></i>
+              This field is required
             </div>
           </div>
           <div class="form-group full-width">
@@ -794,11 +936,11 @@
         </div>
 
         <div class="section-nav">
-          <button type="button" class="nav-btn" onclick="showSection('manufacturer')">
+          <button type="button" class="nav-btn" onclick="previousSection('shipment', 'manufacturer')">
             <i class="fas fa-chevron-left"></i>
             Previous
           </button>
-          <button type="submit" class="nav-btn next" id="submitBtn">
+          <button type="button" class="nav-btn next" onclick="validateAndSubmit()">
             <i class="fas fa-paper-plane"></i>
             Submit Form
           </button>
@@ -808,7 +950,7 @@
 
     <div class="submit-section">
       <div class="form-group">
-        <button type="button" class="submit-btn" id="finalSubmitBtn" onclick="submitForm()">
+        <button type="button" class="submit-btn" id="finalSubmitBtn" onclick="validateAndSubmit()">
           <i class="fas fa-shipping-fast"></i>
           Submit Shipping Information
         </button>
@@ -823,7 +965,13 @@
   <script>
     let config = {};
     let currentSection = 'buyer';
-    const sections = ['buyer', 'consignee', 'stuffing', 'manufacturer', 'shipment'];
+    const sections = [
+      { id: 'buyer', label: 'Buyer', icon: 'building' },
+      { id: 'consignee', label: 'Consignee', icon: 'map-marker-alt' },
+      { id: 'stuffing', label: 'Stuffing', icon: 'warehouse' },
+      { id: 'manufacturer', label: 'Manufacturer', icon: 'industry' },
+      { id: 'shipment', label: 'Shipment', icon: 'box' }
+    ];
 
     // Parse config from URL
     try {
@@ -850,23 +998,40 @@
     // Initialize step indicator
     function initStepIndicator() {
       const indicator = document.getElementById('stepIndicator');
-      indicator.innerHTML = sections.map(section => 
-        `<div class="step-dot ${section === currentSection ? 'active' : ''}" data-section="${section}"></div>`
-      ).join('');
+      indicator.innerHTML = sections.map((section, index) => `
+        <div class="step ${section.id === currentSection ? 'active' : ''} ${index < sections.indexOf(sections.find(s => s.id === currentSection)) ? 'completed' : ''}" data-section="${section.id}">
+          <div class="step-circle">
+            ${index < sections.indexOf(sections.find(s => s.id === currentSection)) ? '' : index + 1}
+          </div>
+          <div class="step-label">${section.label}</div>
+        </div>
+      `).join('');
       
       // Add click handlers for step dots
-      document.querySelectorAll('.step-dot').forEach(dot => {
-        dot.addEventListener('click', () => {
-          showSection(dot.dataset.section);
+      document.querySelectorAll('.step').forEach(step => {
+        step.addEventListener('click', () => {
+          const targetSection = step.dataset.section;
+          if (canNavigateToSection(targetSection)) {
+            showSection(targetSection);
+          }
         });
       });
+    }
+
+    // Check if navigation to section is allowed
+    function canNavigateToSection(targetSection) {
+      const currentIndex = sections.findIndex(s => s.id === currentSection);
+      const targetIndex = sections.findIndex(s => s.id === targetSection);
+      
+      // Allow navigation to previous sections, but not future ones unless completed
+      return targetIndex <= currentIndex;
     }
 
     // Show specific section
     function showSection(sectionId) {
       // Hide all sections
       sections.forEach(section => {
-        document.getElementById(`section-${section}`).classList.remove('active');
+        document.getElementById(`section-${section.id}`).classList.remove('active');
       });
       
       // Show target section
@@ -886,37 +1051,59 @@
 
     // Update progress bar
     function updateProgress() {
-      const currentIndex = sections.indexOf(currentSection);
+      const currentIndex = sections.findIndex(s => s.id === currentSection);
       const progress = ((currentIndex + 1) / sections.length) * 100;
       document.getElementById('progressFill').style.width = `${progress}%`;
     }
 
     // Update step indicator
     function updateStepIndicator() {
-      document.querySelectorAll('.step-dot').forEach((dot, index) => {
+      document.querySelectorAll('.step').forEach((step, index) => {
         const section = sections[index];
-        dot.classList.toggle('active', section === currentSection);
+        step.classList.toggle('active', section.id === currentSection);
+        step.classList.toggle('completed', index < sections.findIndex(s => s.id === currentSection));
+        
+        // Update step circle content
+        const stepCircle = step.querySelector('.step-circle');
+        if (index < sections.findIndex(s => s.id === currentSection)) {
+          stepCircle.innerHTML = '✓';
+        } else {
+          stepCircle.innerHTML = index + 1;
+        }
       });
     }
 
-    // Form validation
+    // Navigate to next section
+    function nextSection(current, next) {
+      if (validateSection(current)) {
+        showSection(next);
+      }
+    }
+
+    // Navigate to previous section
+    function previousSection(current, previous) {
+      showSection(previous);
+    }
+
+    // Form validation for a section
     function validateSection(sectionId) {
       const section = document.getElementById(`section-${sectionId}`);
-      const inputs = section.querySelectorAll('input[required], textarea[required], select[required]');
+      const inputs = section.querySelectorAll('input[required], textarea[required]');
       let isValid = true;
 
       inputs.forEach(input => {
-        const errorElement = input.parentElement?.nextElementSibling;
+        const errorElement = document.getElementById(`${input.name}_error`);
+        
         if (!input.value.trim()) {
           input.classList.add('error');
-          if (errorElement && errorElement.classList.contains('error-message')) {
-            errorElement.textContent = 'This field is required';
+          if (errorElement) {
+            errorElement.classList.add('show');
           }
           isValid = false;
         } else {
           input.classList.remove('error');
-          if (errorElement && errorElement.classList.contains('error-message')) {
-            errorElement.textContent = '';
+          if (errorElement) {
+            errorElement.classList.remove('show');
           }
         }
 
@@ -927,6 +1114,7 @@
             input.classList.add('error');
             if (errorElement) {
               errorElement.textContent = 'Please enter a valid email address';
+              errorElement.classList.add('show');
             }
             isValid = false;
           }
@@ -940,6 +1128,7 @@
             input.classList.add('error');
             if (errorElement) {
               errorElement.textContent = 'Please enter a valid phone number';
+              errorElement.classList.add('show');
             }
             isValid = false;
           }
@@ -949,6 +1138,30 @@
       return isValid;
     }
 
+    // Final form submission
+    function validateAndSubmit() {
+      // Validate all sections
+      let allValid = true;
+      sections.forEach(section => {
+        if (!validateSection(section.id)) {
+          allValid = false;
+          // Show the first invalid section
+          if (allValid === false) {
+            showSection(section.id);
+          }
+        }
+      });
+
+      if (!allValid) {
+        document.getElementById('errorMessage').innerHTML = '<strong>Validation Error!</strong> Please check all required fields and fix any errors.';
+        document.getElementById('errorAlert').style.display = 'flex';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      submitForm();
+    }
+
     // Form submission handler
     async function submitForm() {
       const submitBtn = document.getElementById('finalSubmitBtn');
@@ -956,21 +1169,6 @@
       const errorAlert = document.getElementById('errorAlert');
       const errorMessage = document.getElementById('errorMessage');
       
-      // Validate all sections
-      let allValid = true;
-      sections.forEach(section => {
-        if (!validateSection(section)) {
-          allValid = false;
-        }
-      });
-
-      if (!allValid) {
-        errorMessage.innerHTML = '<strong>Validation Error!</strong> Please check all required fields and fix any errors.';
-        errorAlert.style.display = 'flex';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        return;
-      }
-
       // Hide messages
       successMessage.style.display = 'none';
       errorAlert.style.display = 'none';
@@ -1048,7 +1246,8 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (type === 'SUBMISSION_ERROR') {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Shipping Information';
+        submitBtn.innerHTML = '<i class="fas fa-shipping-fast"></i> Submit Shipping Information';
+        submitBtn.style.background = 'linear-gradient(135deg, var(--accent), #059669)';
         errorMessage.innerHTML = `<strong>Submission Failed!</strong> ${data.message || 'Please try again or contact support.'}`;
         errorAlert.style.display = 'flex';
         
@@ -1072,12 +1271,13 @@
     });
 
     function validateField(field) {
-      const errorElement = field.parentElement?.nextElementSibling;
+      const errorElement = document.getElementById(`${field.name}_error`);
       
       if (!field.value.trim()) {
         field.classList.add('error');
-        if (errorElement && errorElement.classList.contains('error-message')) {
+        if (errorElement) {
           errorElement.textContent = 'This field is required';
+          errorElement.classList.add('show');
         }
         return false;
       }
@@ -1089,14 +1289,15 @@
           field.classList.add('error');
           if (errorElement) {
             errorElement.textContent = 'Please enter a valid email address';
+            errorElement.classList.add('show');
           }
           return false;
         }
       }
       
       field.classList.remove('error');
-      if (errorElement && errorElement.classList.contains('error-message')) {
-        errorElement.textContent = '';
+      if (errorElement) {
+        errorElement.classList.remove('show');
       }
       return true;
     }

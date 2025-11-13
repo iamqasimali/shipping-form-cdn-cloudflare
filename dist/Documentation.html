@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shipping Form SDK - Complete Documentation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary: #f8fafc;
+      --accent: #10b981;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --border: #e2e8f0;
+      --code-bg: #1e293b;
+      --code-text: #e2e8f0;
+      --radius: 12px;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.7;
+      color: var(--text);
+
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      flex: 1;
+      width: 100%;
+
+      margin: 0 auto;
+      background: white;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 40px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      margin-bottom: 1.5rem;
+    }
+
+    .demo-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .demo-link:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: var(--secondary);
+      border-right: 1px solid var(--border);
+      padding: 2rem 0;
+      flex-shrink: 0;
+      overflow-y: auto;
+    }
+
+    .sidebar-nav {
+      list-style: none;
+    }
+
+    .sidebar-nav li {
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 24px;
+      color: var(--text-light);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .sidebar-nav a:hover {
+      background: rgba(99, 102, 241, 0.05);
+      color: var(--primary);
+    }
+
+    .sidebar-nav a.active {
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--primary);
+      border-left-color: var(--primary);
+      font-weight: 600;
+    }
+
+    .content {
+      flex: 1;
+      padding: 2rem 3rem;
+      overflow-y: auto;
+    }
+
+    h1, h2, h3 {
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+      margin-top: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      color: var(--primary);
+      margin-top: 2rem;
+    }
+
+    p {
+      margin-bottom: 1.5rem;
+      color: var(--text-light);
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      border-left: 4px solid var(--accent);
+      font-family: 'Fira Code', 'Courier New', monospace;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    code {
+      background: #f1f5f9;
+      color: var(--primary-dark);
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      font-family: 'Fira Code', 'Courier New', monospace;
+      font-size: 0.9rem;
+    }
+
+    pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+    }
+
+    .code-key { color: #7dd3fc; }
+    .code-string { color: #bbf7d0; }
+    .code-number { color: #fde68a; }
+    .code-comment { color: #94a3b8; }
+
+    .example-box {
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .feature-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .feature-card h4 {
+      color: var(--primary);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1rem;
+    }
+
+    .api-response {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .api-response.error {
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+
+    .warning {
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: var(--radius);
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      color: #92400e;
+    }
+
+    .warning strong {
+      color: #92400e;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .container {
+        margin: 0;
+        border-radius: 0;
+      }
+
+      .header {
+        padding: 2rem 1.5rem;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .main-content {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 1rem 0;
+      }
+
+      .sidebar-nav {
+        display: flex;
+        overflow-x: auto;
+        padding: 0 1rem;
+      }
+
+      .sidebar-nav li {
+        margin-bottom: 0;
+        margin-right: 1rem;
+        flex-shrink: 0;
+      }
+
+      .sidebar-nav a {
+        white-space: nowrap;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        padding: 0.75rem 1rem;
+      }
+
+      .sidebar-nav a.active {
+        border-left: none;
+        border-bottom-color: var(--primary);
+      }
+
+      .content {
+        padding: 1.5rem;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      pre {
+        padding: 1rem;
+        font-size: 0.85rem;
+      }
+    }
+
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+
+    /* Code Copy Button */
+    .code-block {
+      position: relative;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.3s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1><i class="fas fa-shipping-fast"></i> Shipping Form SDK</h1>
+      <p style="color: white;">Complete Documentation & Integration Guide</p>
+      <a href="Demo.html" class="demo-link">
+        <i class="fas fa-rocket"></i>
+        Try Live Demo
+      </a>
+    </div>
+
+    <div class="main-content">
+      <nav class="sidebar">
+        <ul class="sidebar-nav">
+          <li><a href="#installation" class="active" onclick="showSection('installation')">
+            <i class="fas fa-download"></i>Installation
+          </a></li>
+          <li><a href="#configuration" onclick="showSection('configuration')">
+            <i class="fas fa-cog"></i>Configuration
+          </a></li>
+          <li><a href="#api-response" onclick="showSection('api-response')">
+            <i class="fas fa-code"></i>API Response
+          </a></li>
+          <li><a href="#examples" onclick="showSection('examples')">
+            <i class="fas fa-laptop-code"></i>Examples
+          </a></li>
+          <li><a href="#features" onclick="showSection('features')">
+            <i class="fas fa-star"></i>Features
+          </a></li>
+        </ul>
+      </nav>
+
+      <main class="content">
+        <!-- Installation Section -->
+        <section id="installation" class="tab-content active">
+          <h1><i class="fas fa-download"></i> Installation</h1>
+          <p>Get started by adding the SDK script to your HTML page. It's designed to be lightweight and easy to integrate.</p>
+
+          <h2>CDN Installation</h2>
+          <p>Add this script tag to your HTML head or body:</p>
+          <div class="code-block">
+            <pre><code>&lt;script src="https://shipping-form-cdn.iamqasimalizahid.workers.dev/main.js"&gt;&lt;/script&gt;</code></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+
+          <h2>NPM Installation <span class="badge">Coming Soon</span></h2>
+          <p>For module bundlers and modern JavaScript applications:</p>
+          <pre><code>npm install shipping-form-sdk</code></pre>
+
+          <div class="warning">
+            <strong><i class="fas fa-exclamation-triangle"></i> Important:</strong> 
+            Make sure to include the SDK script before initializing the form in your JavaScript code.
+          </div>
+        </section>
+
+        <!-- Configuration Section -->
+        <section id="configuration" class="tab-content">
+          <h1><i class="fas fa-cog"></i> Configuration</h1>
+          <p>Initialize the SDK with your specific configuration options. All settings are optional except for the API endpoint.</p>
+
+          <h2>Basic Configuration</h2>
+          <div class="code-block">
+            <pre><code>const shippingForm = new ShippingFormSDK({
+  <span class="code-key">apiEndpoint</span>: <span class="code-string">'https://your-api.com/api/shipments'</span>, <span class="code-comment">// Required</span>
+  <span class="code-key">apiKey</span>: <span class="code-string">'your-api-key-here'</span>, <span class="code-comment">// Required for secure APIs</span>
+  <span class="code-key">theme</span>: <span class="code-string">'light'</span>, <span class="code-comment">// Optional: 'light' or 'dark'</span>
+  <span class="code-key">language</span>: <span class="code-string">'en'</span>, <span class="code-comment">// Optional: Language code</span>
+  <span class="code-key">autoClose</span>: <span class="code-key">true</span>, <span class="code-comment">// Optional: Auto-close after success</span>
+  <span class="code-key">onSuccess</span>: <span class="code-key">function</span>(data) {
+    <span class="code-comment">// Handle successful submission</span>
+    console.<span class="code-key">log</span>(<span class="code-string">'Shipping created:'</span>, data);
+    alert(<span class="code-string">'Success! Tracking: '</span> + data.tracking_number);
+  },
+  <span class="code-key">onError</span>: <span class="code-key">function</span>(error) {
+    <span class="code-comment">// Handle submission errors</span>
+    console.<span class="code-key">error</span>(<span class="code-string">'Error:'</span>, error);
+    alert(<span class="code-string">'Error: '</span> + error.message);
+  },
+  <span class="code-key">onClose</span>: <span class="code-key">function</span>() {
+    <span class="code-comment">// Handle modal close events</span>
+    console.<span class="code-key">log</span>(<span class="code-string">'Form closed by user'</span>);
+  }
+});</code></pre>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+
+          <h2>Usage Methods</h2>
+          <p>Once initialized, you can control the form with these methods:</p>
+          
+          <h3>Open Form</h3>
+          <pre><code>shippingForm.open();</code></pre>
+
+          <h3>Close Form</h3>
+          <pre><code>shippingForm.close();</code></pre>
+
+          <h3>Update Configuration</h3>
+          <pre><code>shippingForm.updateConfig({
+  theme: 'dark',
+  apiKey: 'new-api-key'
+});</code></pre>
+
+          <h3>Clean Up</h3>
+          <pre><code>shippingForm.destroy();</code></pre>
+        </section>
+
+        <!-- API Response Section -->
+        <section id="api-response" class="tab-content">
+          <h1><i class="fas fa-code"></i> API Response Format</h1>
+          <p>Your backend API should return responses in the following formats for proper SDK functionality.</p>
+
+          <h2><i class="fas fa-check-circle"></i> Success Response (HTTP 200-299)</h2>
+          <p>Return this format when submission is successful:</p>
+          <div class="api-response">
+            <div class="code-block">
+              <pre><code>{
+  <span class="code-key">"success"</span>: <span class="code-key">true</span>,
+  <span class="code-key">"data"</span>: {
+    <span class="code-key">"id"</span>: <span class="code-string">"ship_123456"</span>,
+    <span class="code-key">"tracking_number"</span>: <span class="code-string">"TRK789012"</span>,
+    <span class="code-key">"status"</span>: <span class="code-string">"processing"</span>,
+    <span class="code-key">"estimated_delivery"</span>: <span class="code-string">"2024-01-15"</span>,
+    <span class="code-key">"shipping_cost"</span>: <span class="code-number">24.99</span>,
+    <span class="code-key">"carrier"</span>: <span class="code-string">"UPS"</span>
+  },
+  <span class="code-key">"message"</span>: <span class="code-string">"Shipping information submitted successfully"</span>
+}</code></pre>
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+          </div>
+
+          <h2><i class="fas fa-exclamation-triangle"></i> Error Response (HTTP 400-599)</h2>
+          <p>Return this format when there are validation errors or server issues:</p>
+          <div class="api-response error">
+            <div class="code-block">
+              <pre><code>{
+  <span class="code-key">"success"</span>: <span class="code-key">false</span>,
+  <span class="code-key">"error"</span>: {
+    <span class="code-key">"code"</span>: <span class="code-string">"VALIDATION_ERROR"</span>,
+    <span class="code-key">"message"</span>: <span class="code-string">"Invalid shipping address provided"</span>,
+    <span class="code-key">"details"</span>: {
+      <span class="code-key">"address"</span>: [
+        <span class="code-string">"Address must be at least 10 characters long"</span>,
+        <span class="code-string">"City is required"</span>
+      ],
+      <span class="code-key">"zip_code"</span>: [
+        <span class="code-string">"Invalid zip code format"</span>
+      ]
+    }
+  }
+}</code></pre>
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+          </div>
+
+          <h2>Required Headers</h2>
+          <p>Your API should accept these headers for proper communication:</p>
+          <pre><code>Content-Type: application/json
+X-API-Key: YOUR_API_KEY
+Accept: application/json
+X-SDK-Version: 2.0.0</code></pre>
+        </section>
+
+        <!-- Examples Section -->
+        <section id="examples" class="tab-content">
+          <h1><i class="fas fa-laptop-code"></i> Complete Examples</h1>
+          <p>Here are complete implementation examples for different use cases.</p>
+
+          <h2><i class="fas fa-desktop"></i> Basic HTML Implementation</h2>
+          <div class="example-box">
+            <div class="code-block">
+              <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;My E-commerce Store&lt;/title&gt;
+  <span class="code-comment">&lt;!-- Include SDK --&gt;</span>
+  &lt;script src="https://shipping-form-cdn.iamqasimalizahid.workers.dev/main.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Checkout Page&lt;/h1&gt;
+  &lt;button onclick="openShippingForm()"&gt;
+    🚚 Add Shipping Information
+  &lt;/button&gt;
+
+  &lt;script&gt;
+    let shippingForm;
+
+    <span class="code-comment">// Initialize shipping form</span>
+    function initShippingForm() {
+      shippingForm = new ShippingFormSDK({
+        apiEndpoint: 'https://your-api.com/api/shipments',
+        apiKey: 'your-secure-api-key',
+        theme: 'light',
+        onSuccess: function(data) {
+          console.log('Shipping created:', data);
+          <span class="code-comment">// Update UI with tracking info</span>
+          document.getElementById('tracking-info').innerHTML = `
+            &lt;div class="success"&gt;
+              ✅ Shipping confirmed! Tracking: ${data.tracking_number}
+            &lt;/div&gt;
+          `;
+        },
+        onError: function(error) {
+          console.error('Submission failed:', error);
+          alert('Please check your shipping information and try again.');
+        },
+        onClose: function() {
+          console.log('Shipping form closed');
+        }
+      });
+    }
+
+    function openShippingForm() {
+      if (!shippingForm) {
+        initShippingForm();
+      }
+      shippingForm.open();
+    }
+
+    <span class="code-comment">// Initialize when page loads</span>
+    window.addEventListener('load', initShippingForm);
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+          </div>
+
+          <h2><i class="fab fa-react"></i> React Component Example</h2>
+          <div class="example-box">
+            <div class="code-block">
+              <pre><code>import React, { useEffect, useRef, useState } from 'react';
+
+function ShippingFormButton() {
+  const shippingFormRef = useRef();
+  const [trackingInfo, setTrackingInfo] = useState(null);
+
+  useEffect(() => {
+    <span class="code-comment">// Load SDK dynamically</span>
+    const script = document.createElement('script');
+    script.src = 'https://shipping-form-cdn.iamqasimalizahid.workers.dev/main.js';
+    script.onload = () => {
+      shippingFormRef.current = new ShippingFormSDK({
+        apiEndpoint: 'https://your-api.com/api/shipments',
+        apiKey: 'your-api-key',
+        onSuccess: (data) => {
+          console.log('Success:', data);
+          setTrackingInfo(data);
+          <span class="code-comment">// You can update your React state here</span>
+        },
+        onError: (error) => {
+          console.error('Error:', error);
+          <span class="code-comment">// Handle error in your React app</span>
+        }
+      });
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      <span class="code-comment">// Cleanup</span>
+      if (shippingFormRef.current) {
+        shippingFormRef.current.destroy();
+      }
+      document.head.removeChild(script);
+    };
+  }, []);
+
+  const openForm = () => {
+    if (shippingFormRef.current) {
+      shippingFormRef.current.open();
+    }
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;button 
+        onClick={openForm}
+        className="shipping-button"
+      &gt;
+        🚚 Add Shipping Information
+      &lt;/button&gt;
+      {trackingInfo && (
+        &lt;div className="tracking-info"&gt;
+          Tracking: {trackingInfo.tracking_number}
+        &lt;/div&gt;
+      )}
+    &lt;/div&gt;
+  );
+}
+
+export default ShippingFormButton;</code></pre>
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="tab-content">
+          <h1><i class="fas fa-star"></i> Features & Benefits</h1>
+          <p>The Shipping Form SDK comes packed with features to make integration seamless and user experience excellent.</p>
+
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h4><i class="fas fa-shield-alt"></i> Secure & Safe</h4>
+              <p>Built with security best practices including CORS protection, input validation, and secure API communication.</p>
+            </div>
+            <div class="feature-card">
+              <h4><i class="fas fa-mobile-alt"></i> Fully Responsive</h4>
+              <p>Works perfectly on all devices from desktop to mobile with optimized UI and touch-friendly controls.</p>
+            </div>
+            <div class="feature-card">
+              <h4><i class="fas fa-bolt"></i> Lightweight & Fast</h4>
+              <p>Minimal footprint with fast loading times. No external dependencies required.</p>
+            </div>
+            <div class="feature-card">
+              <h4><i class="fas fa-plug"></i> Easy Integration</h4>
+              <p>Simple setup with comprehensive documentation. Works with any framework or vanilla JS.</p>
+            </div>
+            <div class="feature-card">
+              <h4><i class="fas fa-palette"></i> Customizable</h4>
+              <p>Multiple themes, language support, and customizable callbacks for flexible integration.</p>
+            </div>
+            <div class="feature-card">
+              <h4><i class="fas fa-life-ring"></i> Great Support</h4>
+              <p>Comprehensive documentation, live demos, and responsive support for any issues.</p>
+            </div>
+          </div>
+
+          <h2>Browser Support</h2>
+          <p>The SDK supports all modern browsers including:</p>
+          <ul style="color: var(--text-light); margin: 1rem 0 1rem 2rem; line-height: 1.8;">
+            <li>Chrome 60+</li>
+            <li>Firefox 55+</li>
+            <li>Safari 12+</li>
+            <li>Edge 79+</li>
+            <li>Mobile browsers (iOS Safari, Chrome Mobile)</li>
+          </ul>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    function showSection(sectionId) {
+      // Hide all sections
+      document.querySelectorAll('.tab-content').forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Remove active class from all nav items
+      document.querySelectorAll('.sidebar-nav a').forEach(link => {
+        link.classList.remove('active');
+      });
+      
+      // Show selected section
+      document.getElementById(sectionId).classList.add('active');
+      
+      // Activate clicked nav item
+      event.currentTarget.classList.add('active');
+      
+      // Scroll to top of content
+      document.querySelector('.content').scrollTop = 0;
+    }
+
+    function copyCode(button) {
+      const codeBlock = button.parentElement.querySelector('code');
+      const textArea = document.createElement('textarea');
+      textArea.value = codeBlock.textContent;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      
+      // Visual feedback
+      const originalText = button.textContent;
+      button.textContent = 'Copied!';
+      button.style.background = '#10b981';
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.style.background = '';
+      }, 2000);
+    }
+
+    // Show installation section by default
+    document.addEventListener('DOMContentLoaded', function() {
+      showSection('installation');
+    });
+  </script>
+</body>
+</html>
